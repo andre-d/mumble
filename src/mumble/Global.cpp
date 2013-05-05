@@ -131,7 +131,12 @@ Global::Global() {
 	}
 
 	if (!qs) {
-		qs = new QSettings();
+		QString custom = QString::fromUtf8(qgetenv("MUMBLE_PROFILE").data());
+		if(custom.isEmpty()) {
+		  qs = new QSettings();
+		} else {
+		  qs = new QSettings(QCoreApplication::organizationName(), custom);
+		}
 #if defined(Q_OS_WIN)
 		if (! appdata.isEmpty())
 			qdBasePath.setPath(appdata);
